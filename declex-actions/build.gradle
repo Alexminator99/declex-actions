@@ -1,0 +1,80 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+def DECLEX_VERSION = '2.0.a.35'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 27
+        versionCode 1
+        versionName "$DECLEX_VERSION"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "logLevel": "DEBUG",
+                        "library": "true"
+                ]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    annotationProcessor "com.dspot:declex:$DECLEX_VERSION"
+    implementation "com.dspot:declex-api:$DECLEX_VERSION"
+    implementation "com.dspot:declex-actions-processors:$DECLEX_VERSION"
+
+    compileOnly 'com.android.support:appcompat-v7:27.1.1'
+
+    testImplementation 'junit:junit:4.12'
+}
+
+group = 'com.dspot'
+version = DECLEX_VERSION
+
+configurations {
+    deployerJars
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    destinationDir = file("../javadoc/")
+    failOnError false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives javadocJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: mavenLocal().getUrl())
+        }
+    }
+}

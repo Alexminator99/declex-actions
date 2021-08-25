@@ -1,0 +1,4 @@
+/build
+/.declex
+*.iml
+local.properties
