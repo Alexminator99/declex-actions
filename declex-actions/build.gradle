@@ -33,9 +33,9 @@ android {
 }
 
 dependencies {
-    annotationProcessor "com.github.isidrodspot.declex:declex:$DECLEX_VERSION"
-    implementation "com.github.isidrodspot.declex:declex-api:$DECLEX_VERSION"
-    implementation "com.github.isidrodspot.declex:declex-actions-processors:$DECLEX_VERSION"
+    annotationProcessor "com.github.Alexminator99.declex:declex:$DECLEX_VERSION"
+    implementation "com.github.Alexminator99.declex:declex-api:$DECLEX_VERSION"
+    implementation "com.github.Alexminator99.declex:declex-actions-processors:$DECLEX_VERSION"
 
     compileOnly 'com.android.support:appcompat-v7:27.1.1'
 
